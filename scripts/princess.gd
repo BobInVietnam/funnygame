@@ -1,11 +1,16 @@
 extends CharacterBody2D
+class_name Princess
+
+signal princess_down()
+signal checkpoint_passed(checkpoint: Vector2)
 
 enum AmmoType {RED, YELLOW, BLUE}
-enum PlayerState {NORMAL, HURT, DOWN}
+enum PlayerState {NORMAL, HURT}
 
 @export var speed: float = 200.0
 @export var maxHealth: int = 100
 @export var jumpVelocity: float = -200.0
+@export var retry: int = 3
 @export var red_proj_scene: PackedScene 
 @export var yellow_proj_scene: PackedScene
 @export var blue_proj_scene: PackedScene
@@ -17,6 +22,7 @@ enum PlayerState {NORMAL, HURT, DOWN}
 
 const COOLDOWN = 0.5
 var currentHealth: int
+var current_retry: int
 var currentState: PlayerState = PlayerState.NORMAL
 var currentAmmoType: AmmoType = AmmoType.YELLOW
 var ready_to_shoot: bool = true
@@ -25,6 +31,7 @@ var invincible: bool = false
 
 func _ready() -> void:
 	currentHealth = maxHealth
+	current_retry = retry
 
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
@@ -60,8 +67,6 @@ func _physics_process(delta: float) -> void:
 
 func play_animation() -> void:
 	match currentState:
-		PlayerState.DOWN:
-			animatedSprite.play("hurt")
 		PlayerState.HURT:
 			animatedSprite.play("hurt")
 		PlayerState.NORMAL:
@@ -126,13 +131,17 @@ func get_hurt(damage: int) -> void:
 		return
 	
 	currentHealth -= damage
+	print(currentHealth)
 	currentState = PlayerState.HURT
 	invin_timer.start()
 	invincible = true
-	if (currentHealth <= 0):
-		currentState = PlayerState.DOWN
-		
 	play_hit_flash()
+	if (currentHealth <= 0):
+		lose()
+		
+func lose() -> void:
+	print("Princess down!")
+	princess_down.emit()
 
 func play_hit_flash() -> void:
 	# Fetch the shader material attached to our sprite
@@ -145,11 +154,17 @@ func play_hit_flash() -> void:
 		tween.tween_property(shader_material, "shader_parameter/flash_modifier", 1.0, 0.0)
 		# Fade back to normal over 0.15 seconds
 		tween.tween_property(shader_material, "shader_parameter/flash_modifier", 0.0, 0.15)
+		
+func restore_from_checkpoint() -> void:
+	currentHealth = maxHealth
+	currentState = PlayerState.NORMAL
+	
+func save_checkpoint(checkpoint: Vector2) -> void:
+	checkpoint_passed.emit(checkpoint)
 
 func _on_invin_timer_timeout() -> void:
 	currentState = PlayerState.NORMAL
 	invincible = false
-
 
 func _on_cooldowns_timer_timeout() -> void:
 	ready_to_shoot = true
