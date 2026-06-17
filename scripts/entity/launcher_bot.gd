@@ -1,0 +1,105 @@
+extends Enemy
+class_name LauncherBot
+
+enum BotState {IDLE, ATTACK}
+
+@export var bullet_scene: PackedScene
+@onready var animated_sprite = $AnimatedSprite2D
+@onready var cooldown_timer = $CooldownTimer
+@onready var muzzle = $Marker2D
+
+var state: BotState = BotState.IDLE
+var player: Node2D = null
+var direction: int = 1
+var ready_to_shoot: bool = true
+
+func _ready() -> void:
+	var players = get_tree().get_nodes_in_group("Princess")
+	if players.size() > 0:
+		player = players[0]
+	current_health = health
+
+func _physics_process(delta: float) -> void:
+	if not is_on_floor():
+		velocity += get_gravity() * delta
+		
+	if direction == 1:
+		animated_sprite.flip_h = true
+	elif direction == -1:
+		animated_sprite.flip_h = false
+		
+	match state:
+		BotState.IDLE:
+			animated_sprite.play("idle")
+		BotState.ATTACK:
+			animated_sprite.play("walk")
+			move_towards_player(delta)
+			shoot()
+	move_and_slide()
+			
+func shoot() -> void:
+	if not ready_to_shoot:
+		return
+	
+	print("LBot shooting a bullet")
+	ready_to_shoot = false
+	
+	var projectile_instance = bullet_scene.instantiate() as Projectile
+	cooldown_timer.start(projectile_instance.cooldown)
+	projectile_instance.global_position = muzzle.global_position
+	projectile_instance.direction = Vector2.RIGHT if direction == 1 else Vector2.LEFT
+	
+	# 6. Add it to the world root so it moves independently of the player
+	get_tree().current_scene.add_child(projectile_instance)
+	
+func move_towards_player(delta: float) -> void:
+	# Guard clause: Make sure the player actually exists in the scene before tracking
+	if player == null:
+		return
+	# Target position is where the player is located globally
+	var target_position: Vector2 = player.global_position
+	if target_position.x > global_position.x:
+		direction = 1
+	else:
+		direction = -1
+	# Move this Area2D's position towards the target position
+	velocity.x = speed * direction
+
+func get_hurt(damage: int) -> void:
+	current_health -= damage
+	play_hit_flash()
+	if (current_health <= 0):
+		queue_free()
+		
+func play_hit_flash() -> void:
+	# Fetch the shader material attached to our sprite
+	var shader_material = animated_sprite.material as ShaderMaterial
+	
+	if shader_material:
+		# Create a quick animation sequence
+		var tween = create_tween()
+		# Turn the sprite completely white instantly (0.0 seconds)
+		tween.tween_property(shader_material, "shader_parameter/flash_modifier", 1.0, 0.0)
+		# Fade back to normal over 0.15 seconds
+		tween.tween_property(shader_material, "shader_parameter/flash_modifier", 0.0, 0.15)
+
+func _on_hitbox_body_entered(body: Node2D) -> void:
+	print("Something entered")
+	if body.is_in_group("Princess"):
+		print("Princess entered")
+		body.get_hurt(contact_damage)
+
+func _on_detection_hitbox_body_entered(body: Node2D) -> void:
+	if body.is_in_group("Princess"):
+		print("Princess in range")
+		state = BotState.ATTACK
+
+
+func _on_detection_hitbox_body_exited(body: Node2D) -> void:
+	if body.is_in_group("Princess"):
+		print("Princess out range")
+		state = BotState.IDLE
+
+
+func _on_cooldown_timer_timeout() -> void:
+	ready_to_shoot = true

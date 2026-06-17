@@ -1,0 +1,104 @@
+[gd_scene load_steps=13 format=3 uid="uid://y5nmfbs6l4q8"]
+
+[ext_resource type="Script" uid="uid://cfcwwejroqt2f" path="res://scripts/entity/launcher_bot.gd" id="1_queww"]
+[ext_resource type="Shader" uid="uid://dl108kgkw3lgu" path="res://assets/hit_flash.gdshader" id="2_0jo5u"]
+[ext_resource type="PackedScene" uid="uid://cglybnapbqi6b" path="res://scenes/projectiles/bullet.tscn" id="2_xsonp"]
+[ext_resource type="Texture2D" uid="uid://cu881ljlyyxun" path="res://assets/charsheets.png" id="3_xsonp"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_012fp"]
+shader = ExtResource("2_0jo5u")
+shader_parameter/flash_modifier = 0.0
+shader_parameter/flash_color = Color(1, 1, 1, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_queww"]
+atlas = ExtResource("3_xsonp")
+region = Rect2(0, 128, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0jo5u"]
+atlas = ExtResource("3_xsonp")
+region = Rect2(64, 128, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xsonp"]
+atlas = ExtResource("3_xsonp")
+region = Rect2(0, 128, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wlct6"]
+atlas = ExtResource("3_xsonp")
+region = Rect2(32, 128, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_hymqh"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_queww")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0jo5u")
+}],
+"loop": true,
+"name": &"shoot",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xsonp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wlct6")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_j2lpu"]
+size = Vector2(16, 19)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5b4e7"]
+radius = 120.0
+
+[node name="LauncherBot" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("1_queww")
+bullet_scene = ExtResource("2_xsonp")
+speed = 50.0
+contact_damage = 20
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+material = SubResource("ShaderMaterial_012fp")
+position = Vector2(0, -16)
+sprite_frames = SubResource("SpriteFrames_hymqh")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="CollisionShape" type="CollisionShape2D" parent="."]
+position = Vector2(-1, -10.5)
+shape = SubResource("RectangleShape2D_j2lpu")
+
+[node name="DetectionHitbox" type="Area2D" parent="."]
+
+[node name="Detection" type="CollisionShape2D" parent="DetectionHitbox"]
+position = Vector2(-7, -14)
+shape = SubResource("CircleShape2D_5b4e7")
+
+[node name="Hitbox" type="Area2D" parent="."]
+
+[node name="Hitbox" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2(-1, -10)
+shape = SubResource("RectangleShape2D_j2lpu")
+
+[node name="Marker2D" type="Marker2D" parent="."]
+position = Vector2(-9, -24)
+
+[node name="CooldownTimer" type="Timer" parent="."]
+
+[connection signal="body_entered" from="DetectionHitbox" to="." method="_on_detection_hitbox_body_entered"]
+[connection signal="body_exited" from="DetectionHitbox" to="." method="_on_detection_hitbox_body_exited"]
+[connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]
+[connection signal="timeout" from="CooldownTimer" to="." method="_on_cooldown_timer_timeout"]

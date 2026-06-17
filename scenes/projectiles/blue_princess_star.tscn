@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://byhgwwjgobc0r"]
+
+[ext_resource type="Script" uid="uid://cixh8u43i1t2y" path="res://scripts/projectile.gd" id="1_lx4ju"]
+[ext_resource type="Texture2D" uid="uid://cu881ljlyyxun" path="res://assets/charsheets.png" id="2_o4ku8"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_jewoi"]
+radius = 6.0
+
+[node name="BluePrincessStar" type="Area2D"]
+collision_layer = 16
+collision_mask = 14
+script = ExtResource("1_lx4ju")
+speed = 400.0
+damage = 20
+lifetime = 0.5
+cooldown = 0.4
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-0.99999785, -0.99999976)
+texture = ExtResource("2_o4ku8")
+region_enabled = true
+region_rect = Rect2(229, 40, 18, 12)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1, -1)
+shape = SubResource("CircleShape2D_jewoi")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
