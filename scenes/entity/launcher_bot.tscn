@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://cu881ljlyyxun" path="res://assets/charsheets.png" id="3_xsonp"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_012fp"]
+resource_local_to_scene = true
 shader = ExtResource("2_0jo5u")
 shader_parameter/flash_modifier = 0.0
 shader_parameter/flash_color = Color(1, 1, 1, 1)

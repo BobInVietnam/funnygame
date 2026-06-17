@@ -11,7 +11,7 @@ collision_layer = 16
 collision_mask = 14
 script = ExtResource("1_vbwvi")
 speed = 150.0
-damage = 100
+damage = 120
 lifetime = 8.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://cglybnapbqi6b"]
 
-[ext_resource type="Script" uid="uid://cixh8u43i1t2y" path="res://scripts/projectile.gd" id="1_48g2p"]
+[ext_resource type="Script" uid="uid://ii7kv582esnk" path="res://scripts/bullet.gd" id="1_48g2p"]
 [ext_resource type="Texture2D" uid="uid://cu881ljlyyxun" path="res://assets/charsheets.png" id="2_k5ji7"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_48g2p"]
@@ -9,9 +9,6 @@ size = Vector2(15, 8)
 [node name="Bullet" type="Area2D"]
 collision_layer = 32
 script = ExtResource("1_48g2p")
-speed = 150.0
-damage = 20
-lifetime = 5.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(-0.99999785, -0.99999976)

@@ -1,5 +1,5 @@
 extends Enemy
-class_name Bot
+class_name FlyingBot
 
 enum BotState {IDLE, ATTACK}
 @onready var animated_sprite = $AnimatedSprite2D
@@ -14,9 +14,6 @@ func _ready() -> void:
 	current_health = health
 
 func _physics_process(delta: float) -> void:
-	if not is_on_floor():
-		velocity += get_gravity() * delta
-		
 	if direction == 1:
 		animated_sprite.flip_h = true
 	elif direction == -1:
@@ -25,6 +22,7 @@ func _physics_process(delta: float) -> void:
 	match state:
 		BotState.IDLE:
 			animated_sprite.play("idle")
+			velocity = Vector2.ZERO
 		BotState.ATTACK:
 			animated_sprite.play("walk")
 			move_towards_player(delta)
@@ -36,12 +34,14 @@ func move_towards_player(delta: float) -> void:
 		return
 	# Target position is where the player is located globally
 	var target_position: Vector2 = player.global_position
+	var direction_vector: Vector2 = (target_position - global_position).normalized()
 	if target_position.x > global_position.x:
 		direction = 1
 	else:
 		direction = -1
+	
 	# Move this Area2D's position towards the target position
-	velocity.x = speed * direction
+	velocity = speed * direction_vector
 
 func get_hurt(damage: int) -> void:
 	current_health -= damage

@@ -6,7 +6,7 @@ enum PlayerState {NORMAL, HURT, DOWN}
 @export var speed: float = 200.0
 @export var maxHealth: int = 100
 @export var jumpVelocity: float = -200.0
-@export var red_proj_scene: PackedScene
+@export var red_proj_scene: PackedScene 
 @export var yellow_proj_scene: PackedScene
 @export var blue_proj_scene: PackedScene
 

@@ -12,8 +12,8 @@ collision_mask = 14
 script = ExtResource("1_lx4ju")
 speed = 400.0
 damage = 20
-lifetime = 0.5
-cooldown = 0.4
+lifetime = 0.4
+cooldown = 0.3
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(-0.99999785, -0.99999976)

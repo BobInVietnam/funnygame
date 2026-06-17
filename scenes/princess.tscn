@@ -149,7 +149,6 @@ size = Vector2(13, 30)
 
 [node name="player" type="CharacterBody2D" groups=["Princess"]]
 script = ExtResource("1_6t68o")
-jumpVelocity = -300.0
 red_proj_scene = ExtResource("2_juk0a")
 yellow_proj_scene = ExtResource("2_rl5q2")
 blue_proj_scene = ExtResource("4_3mclv")

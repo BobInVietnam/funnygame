@@ -1,30 +1,36 @@
-[gd_scene load_steps=8 format=3 uid="uid://smnftbuuld71"]
+[gd_scene load_steps=10 format=3 uid="uid://smnftbuuld71"]
 
 [ext_resource type="PackedScene" uid="uid://dx38fdcdlpvww" path="res://scenes/princess.tscn" id="1_uwrxv"]
 [ext_resource type="PackedScene" uid="uid://cdklc75v8jyus" path="res://scenes/tile_map_layer.tscn" id="1_yqjtg"]
 [ext_resource type="PackedScene" uid="uid://bw0jgg57rm4sc" path="res://scenes/killzone.tscn" id="3_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://bvacpa6xb7ayu" path="res://scenes/entity/bot.tscn" id="4_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://y5nmfbs6l4q8" path="res://scenes/entity/launcher_bot.tscn" id="5_iywne"]
-[ext_resource type="Texture2D" uid="uid://ca8ehdv35df43" path="res://assets/gamebg.png" id="6_p57ef"]
+[ext_resource type="PackedScene" uid="uid://cxhtiefp8lqg5" path="res://scenes/entity/flying_bot.tscn" id="7_gee14"]
+
+[sub_resource type="GDScript" id="GDScript_p57ef"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_iywne"]
+load_path = "res://.godot/imported/gamebg.png-bb98c044bf35ec67af3b4cac69bb0c89.ctex"
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_lbhrr"]
 
 [node name="Game" type="Node2D"]
+script = SubResource("GDScript_p57ef")
 
 [node name="Parallax2D" type="Parallax2D" parent="."]
 scroll_scale = Vector2(0.4, 0.4)
 repeat_size = Vector2(512, 0)
-repeat_times = 2
+repeat_times = 3
 
 [node name="Sprite2D" type="Sprite2D" parent="Parallax2D"]
-position = Vector2(387.00003, 235.00002)
-scale = Vector2(3.0239255, 3.673828)
-texture = ExtResource("6_p57ef")
+position = Vector2(256, 183)
+scale = Vector2(2, 2)
+texture = SubResource("CompressedTexture2D_iywne")
 
 [node name="TileMapLayers" parent="." instance=ExtResource("1_yqjtg")]
 
 [node name="Princess" parent="." instance=ExtResource("1_uwrxv")]
-jumpVelocity = -250.0
+jumpVelocity = -300.0
 
 [node name="Camera2D" type="Camera2D" parent="Princess"]
 position = Vector2(131, -49)
@@ -46,4 +52,41 @@ shape = SubResource("WorldBoundaryShape2D_lbhrr")
 position = Vector2(259, -19)
 
 [node name="LauncherBot" parent="." instance=ExtResource("5_iywne")]
-position = Vector2(288, -146)
+position = Vector2(286, -18)
+
+[node name="LauncherBot2" parent="." instance=ExtResource("5_iywne")]
+position = Vector2(969, -156)
+
+[node name="Bot2" parent="." instance=ExtResource("4_lbhrr")]
+position = Vector2(1073, -54)
+
+[node name="Bot3" parent="." instance=ExtResource("4_lbhrr")]
+position = Vector2(821, -58)
+
+[node name="Bot4" parent="." instance=ExtResource("4_lbhrr")]
+position = Vector2(1755, -169)
+
+[node name="LauncherBot3" parent="." instance=ExtResource("5_iywne")]
+position = Vector2(2119, -60)
+
+[node name="LauncherBot4" parent="." instance=ExtResource("5_iywne")]
+position = Vector2(2298, -93)
+
+[node name="LauncherBot5" parent="." instance=ExtResource("5_iywne")]
+position = Vector2(3341, -115)
+
+[node name="LauncherBot6" parent="." instance=ExtResource("5_iywne")]
+position = Vector2(3502, -99)
+
+[node name="LauncherBot7" parent="." instance=ExtResource("5_iywne")]
+position = Vector2(3429, -103)
+
+[node name="Bot5" parent="." instance=ExtResource("4_lbhrr")]
+position = Vector2(3707, -78)
+
+[node name="FlyingBot" parent="." instance=ExtResource("7_gee14")]
+position = Vector2(2705, -137)
+
+[node name="FlyingBot2" parent="." instance=ExtResource("7_gee14")]
+position = Vector2(513, -108)
+speed = 40.0
