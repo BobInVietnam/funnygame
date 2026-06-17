@@ -5,6 +5,7 @@
 [ext_resource type="Shader" uid="uid://dl108kgkw3lgu" path="res://assets/hit_flash.gdshader" id="2_4vd51"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_012fp"]
+resource_local_to_scene = true
 shader = ExtResource("2_4vd51")
 shader_parameter/flash_modifier = 0.0
 shader_parameter/flash_color = Color(1, 1, 1, 1)

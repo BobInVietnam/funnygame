@@ -1,0 +1,41 @@
+[gd_scene load_steps=5 format=3 uid="uid://0xc02tqgkah7"]
+
+[ext_resource type="Script" uid="uid://bx2xxmjhgnoxw" path="res://scripts/textbox.gd" id="1_3xmdk"]
+[ext_resource type="Texture2D" uid="uid://c8bqerx63jf5" path="res://assets/npchatbox.png" id="2_g5d5p"]
+
+[sub_resource type="SystemFont" id="SystemFont_3xmdk"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_g5d5p"]
+font = SubResource("SystemFont_3xmdk")
+font_size = 11
+font_color = Color(0.06053035, 0.06053035, 0.060530342, 1)
+
+[node name="PanelContainer" type="PanelContainer"]
+offset_right = 40.0
+offset_bottom = 31.0
+size_flags_vertical = 4
+script = ExtResource("1_3xmdk")
+title_text = "Testing"
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+layout_mode = 2
+texture = ExtResource("2_g5d5p")
+region_rect = Rect2(0, 0, 32, 31)
+patch_margin_left = 5
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="Label" type="Label" parent="MarginContainer"]
+z_index = 100
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 2
+label_settings = SubResource("LabelSettings_g5d5p")
+autowrap_mode = 2

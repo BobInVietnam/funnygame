@@ -1,14 +1,18 @@
-[gd_scene load_steps=7 format=3 uid="uid://smnftbuuld71"]
+[gd_scene load_steps=14 format=3 uid="uid://smnftbuuld71"]
 
 [ext_resource type="PackedScene" uid="uid://dx38fdcdlpvww" path="res://scenes/princess.tscn" id="1_uwrxv"]
 [ext_resource type="PackedScene" uid="uid://cdklc75v8jyus" path="res://scenes/tile_map_layer.tscn" id="1_yqjtg"]
+[ext_resource type="PackedScene" uid="uid://b76mcvs4o3bw" path="res://scenes/entity/boss_idle.tscn" id="3_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://bw0jgg57rm4sc" path="res://scenes/killzone.tscn" id="3_lnu2h"]
+[ext_resource type="PackedScene" uid="uid://0xc02tqgkah7" path="res://scenes/textbox.tscn" id="5_iywne"]
 
 [sub_resource type="GDScript" id="GDScript_p57ef"]
 script/source = "extends Node
 
 @onready var princess = $Princess
 @onready var spawnpoint = $Spawnpoint
+@onready var animation_player = $AnimationPlayer
+
 var last_checkpoint_position: Vector2
 
 func _ready() -> void:
@@ -33,12 +37,268 @@ func _on_princess_princess_down() -> void:
 
 func _on_princess_checkpoint_passed(checkpoint: Vector2) -> void:
 	last_checkpoint_position = checkpoint
+	
+
+func _on_trigger_scene_1_body_exited(body: Node2D) -> void:
+	if body.is_in_group(\"Princess\"):
+		print(\"Playing scene1\")
+		animation_player.play(\"scene1\")
 "
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_iywne"]
 load_path = "res://.godot/imported/gamebg.png-bb98c044bf35ec67af3b4cac69bb0c89.ctex"
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_lbhrr"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_iywne"]
+a = Vector2(0, -33)
+b = Vector2(-1, 119)
+
+[sub_resource type="Animation" id="Animation_lbhrr"]
+resource_name = "scene1"
+length = 24.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BossIdle/BossTextbox:title_text")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 9, 18),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": ["Sao lại đến đâyyy", "Èooooo xây đống này xong hết tiền rồiiiii...", "Huhuhu tha tuiii"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("BossIdle/BossTextbox:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 8.033334, 9, 16.966667, 18, 24),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [true, false, true, false, true, false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Princess/PrincessTextbox:title_text")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(4.5333333, 13.5, 20.008333),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": ["Nàooo hôm nay sinh nhật tui đấyyy!", "Hứ! Xuống ngay đây đi đồ tồyyyyyyy", "Mua quà sinh nhật điiiiiiii!!!! >:("]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Princess/PrincessTextbox:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(4.5333333, 12.5, 13.5, 19.258333, 20.016666, 24),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [true, false, true, false, true, false]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("CameraSnap/TriggerScene1:monitoring")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Princess/Camera2D:offset")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(-0.033333335, 0.5, 23.5, 24),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(100, -20), Vector2(100, -20), Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_iywne"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BossIdle/BossTextbox:title_text")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["Sao lại đến đâyyy"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("BossIdle/BossTextbox:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Princess/PrincessTextbox:title_text")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["Nàooo hôm nay sinh nhật tui đấyyy!"]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Princess/PrincessTextbox:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("CameraSnap/TriggerScene1:monitoring")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Princess/Camera2D:offset")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("BossIdle2/BossTextbox2:title_text")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["Testing"]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("BossIdle2/BossTextbox2:visible")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_p57ef"]
+resource_name = "scene2"
+length = 24.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Princess/Camera2D:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.008333334, 0.65, 23.4, 24),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(100, -10), Vector2(0, 0), Vector2(100, -10), Vector2(100, -10), Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Princess/PrincessTextbox:title_text")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 4, 11.966666, 20.008333),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": ["Sao đã tới đây rồiii", "Ý là thế nào?? Giải thích đi?!?", "Bực mình rùi đấy nhaaaa. Sinh nhật mà không quan tâm đến người taa.", "Bực mình!! Tui sẽ đấmmmmmm"]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Princess/PrincessTextbox:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 3.5, 4, 11.266666, 11.966666, 19.091667, 20.008333, 24),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [true, false, true, false, true, false, true, false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("BossIdle2/BossTextbox2:title_text")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.4, 8.033334, 16),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": ["Đừng màaa đừng giận dỗi nữa màaaa =(((((", "Xin nhũiiiii xin nhũiii màaaaa hãy tha thứuuuuu", "Huhu tui lỡ làm say quá mà quên mấtttt cho xin thời gian kím xiền bù quà đi mòooo"]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("BossIdle2/BossTextbox2:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0.4, 7.4666667, 8.033334, 15.066667, 16, 24),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [true, false, true, false, true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_iywne"]
+_data = {
+&"RESET": SubResource("Animation_iywne"),
+&"scene1": SubResource("Animation_lbhrr"),
+&"scene2": SubResource("Animation_p57ef")
+}
 
 [node name="Game" type="Node2D"]
 script = SubResource("GDScript_p57ef")
@@ -68,6 +328,14 @@ limit_bottom = 149
 position_smoothing_enabled = true
 position_smoothing_speed = 15.0
 
+[node name="PrincessTextbox" parent="Princess" instance=ExtResource("5_iywne")]
+visible = false
+offset_left = -76.0
+offset_top = -108.0
+offset_right = 77.0
+offset_bottom = -73.0
+title_text = "Nàooo hôm nay sinh nhật tui đấyyy!"
+
 [node name="Killzone" parent="." instance=ExtResource("3_lnu2h")]
 position = Vector2(123, 132)
 collision_layer = 255
@@ -76,8 +344,57 @@ collision_mask = 255
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Killzone"]
 shape = SubResource("WorldBoundaryShape2D_lbhrr")
 
+[node name="BossIdle" parent="." instance=ExtResource("3_lbhrr")]
+position = Vector2(1496, -132)
+
+[node name="BossTextbox" parent="BossIdle" instance=ExtResource("5_iywne")]
+visible = false
+z_index = 10
+offset_left = -77.0
+offset_top = -108.0
+offset_right = 80.0
+offset_bottom = -69.0
+title_text = "Sao lại đến đâyyy"
+
+[node name="BossIdle2" parent="." instance=ExtResource("3_lbhrr")]
+position = Vector2(3269, -58)
+
+[node name="BossTextbox2" parent="BossIdle2" instance=ExtResource("5_iywne")]
+visible = false
+z_index = 10
+offset_left = -35.0
+offset_top = -109.0
+offset_right = 37.0
+offset_bottom = -48.0
+
 [node name="Spawnpoint" type="Marker2D" parent="."]
 position = Vector2(0, -34)
 
+[node name="Texts" type="Node" parent="."]
+
+[node name="CameraSnap" type="Node" parent="."]
+
+[node name="TriggerScene1" type="Area2D" parent="CameraSnap"]
+position = Vector2(1227, -130)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CameraSnap/TriggerScene1"]
+position = Vector2(-24, -11)
+shape = SubResource("SegmentShape2D_iywne")
+
+[node name="TriggerScene2" type="Area2D" parent="CameraSnap"]
+position = Vector2(1227, -130)
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CameraSnap/TriggerScene2"]
+position = Vector2(1758, -15)
+shape = SubResource("SegmentShape2D_iywne")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_iywne")
+}
+
 [connection signal="checkpoint_passed" from="Princess" to="." method="_on_princess_checkpoint_passed"]
 [connection signal="princess_down" from="Princess" to="." method="_on_princess_princess_down"]
+[connection signal="body_exited" from="CameraSnap/TriggerScene1" to="." method="_on_trigger_scene_1_body_exited"]
+[connection signal="body_exited" from="CameraSnap/TriggerScene2" to="." method="_on_trigger_scene_1_body_exited"]

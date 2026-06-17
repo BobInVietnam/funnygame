@@ -21,10 +21,8 @@ func _physics_process(delta: float) -> void:
 		
 	match state:
 		BotState.IDLE:
-			animated_sprite.play("idle")
 			velocity = Vector2.ZERO
 		BotState.ATTACK:
-			animated_sprite.play("walk")
 			move_towards_player(delta)
 	move_and_slide()
 			

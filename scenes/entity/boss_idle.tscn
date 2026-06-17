@@ -1,0 +1,65 @@
+[gd_scene load_steps=10 format=3 uid="uid://b76mcvs4o3bw"]
+
+[ext_resource type="Texture2D" uid="uid://cu881ljlyyxun" path="res://assets/charsheets.png" id="1_vmww1"]
+[ext_resource type="Script" uid="uid://bqrjf7xygaeqg" path="res://scripts/entity/boss_idle.gd" id="1_yva6k"]
+[ext_resource type="Shader" uid="uid://dl108kgkw3lgu" path="res://assets/hit_flash.gdshader" id="2_xsvo4"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_23kos"]
+resource_local_to_scene = true
+shader = ExtResource("2_xsvo4")
+shader_parameter/flash_modifier = 0.0
+shader_parameter/flash_color = Color(1, 1, 1, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yva6k"]
+atlas = ExtResource("1_vmww1")
+region = Rect2(0, 64, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xsvo4"]
+atlas = ExtResource("1_vmww1")
+region = Rect2(32, 64, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_23kos"]
+atlas = ExtResource("1_vmww1")
+region = Rect2(128, 96, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_k5mjx"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yva6k")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xsvo4")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_23kos")
+}],
+"loop": true,
+"name": &"down",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4o3jm"]
+size = Vector2(17, 33)
+
+[node name="BossIdle" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("1_yva6k")
+speed = 0.0
+contact_damage = 1
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+material = SubResource("ShaderMaterial_23kos")
+position = Vector2(0, -16)
+sprite_frames = SubResource("SpriteFrames_k5mjx")
+autoplay = "default"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.5, -16.5)
+shape = SubResource("RectangleShape2D_4o3jm")
