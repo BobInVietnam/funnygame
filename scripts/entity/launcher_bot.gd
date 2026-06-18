@@ -42,7 +42,6 @@ func shoot() -> void:
 	if not ready_to_shoot:
 		return
 	
-	print("LBot shooting a bullet")
 	ready_to_shoot = false
 	
 	var projectile_instance = bullet_scene.instantiate() as Projectile
@@ -85,20 +84,16 @@ func play_hit_flash() -> void:
 		tween.tween_property(shader_material, "shader_parameter/flash_modifier", 0.0, 0.15)
 
 func _on_hitbox_body_entered(body: Node2D) -> void:
-	print("Something entered")
 	if body.is_in_group("Princess"):
-		print("Princess entered")
 		body.get_hurt(contact_damage)
 
 func _on_detection_hitbox_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Princess"):
-		print("Princess in range")
 		state = BotState.ATTACK
 
 
 func _on_detection_hitbox_body_exited(body: Node2D) -> void:
 	if body.is_in_group("Princess"):
-		print("Princess out range")
 		state = BotState.IDLE
 
 

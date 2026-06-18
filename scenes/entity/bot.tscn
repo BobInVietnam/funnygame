@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bvacpa6xb7ayu"]
+[gd_scene format=3 uid="uid://bvacpa6xb7ayu"]
 
 [ext_resource type="Texture2D" uid="uid://cu881ljlyyxun" path="res://assets/charsheets.png" id="1_5b4e7"]
 [ext_resource type="Script" uid="uid://b1euynl25mwtp" path="res://scripts/entity/bot.gd" id="1_fgpec"]
@@ -50,31 +50,31 @@ size = Vector2(16, 19)
 [sub_resource type="CircleShape2D" id="CircleShape2D_5b4e7"]
 radius = 150.0
 
-[node name="Bot" type="CharacterBody2D"]
+[node name="Bot" type="CharacterBody2D" unique_id=733288105]
 collision_layer = 2
 collision_mask = 2
 script = ExtResource("1_fgpec")
 contact_damage = 20
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=790666745]
 material = SubResource("ShaderMaterial_012fp")
 position = Vector2(0, -16)
 sprite_frames = SubResource("SpriteFrames_hymqh")
 animation = &"walk"
 
-[node name="CollisionShape" type="CollisionShape2D" parent="."]
+[node name="CollisionShape" type="CollisionShape2D" parent="." unique_id=1753002373]
 position = Vector2(-1, -10.5)
 shape = SubResource("RectangleShape2D_j2lpu")
 
-[node name="DetectionHitbox" type="Area2D" parent="."]
+[node name="DetectionHitbox" type="Area2D" parent="." unique_id=197879003]
 
-[node name="Detection" type="CollisionShape2D" parent="DetectionHitbox"]
+[node name="Detection" type="CollisionShape2D" parent="DetectionHitbox" unique_id=377096981]
 position = Vector2(-7, -14)
 shape = SubResource("CircleShape2D_5b4e7")
 
-[node name="Hitbox" type="Area2D" parent="."]
+[node name="Hitbox" type="Area2D" parent="." unique_id=2023649729]
 
-[node name="Hitbox" type="CollisionShape2D" parent="Hitbox"]
+[node name="Hitbox" type="CollisionShape2D" parent="Hitbox" unique_id=1024425507]
 position = Vector2(-1, -10)
 shape = SubResource("RectangleShape2D_j2lpu")
 

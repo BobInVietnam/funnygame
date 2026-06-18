@@ -92,11 +92,12 @@ script = ExtResource("2_yev5y")
 ui_images = Array[Texture2D]([SubResource("AtlasTexture_8dubc"), SubResource("AtlasTexture_p7vwb"), SubResource("AtlasTexture_ktti3")])
 
 [node name="RichTextLabel" type="Label" parent="." unique_id=1457953277]
+visible = false
 offset_left = 275.0
 offset_top = 172.0
 offset_right = 843.0
 offset_bottom = 313.0
-text = "HUHU XIN CHỊU THUAAAA
+text = "ĐÃ OÁNH THẮNG KẺ QUÊN SINH NHẬT!
 CHÚC MỪNG SINH NHẬT IUUU!! 
 "
 label_settings = SubResource("LabelSettings_yev5y")

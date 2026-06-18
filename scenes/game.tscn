@@ -25,6 +25,7 @@ script/source = "extends Node
 @onready var bdcake2 = $BirthdayCake2
 @onready var win_sound = $SFX/Win
 @onready var lose_sound = $SFX/Lose
+@onready var camera = $Princess/Camera2D
 
 var last_checkpoint_position: Vector2
 
@@ -41,7 +42,6 @@ func respawn_player(player: Princess) -> void:
 		player.restore_from_checkpoint()
 		get_tree().reload_current_scene()
 
-
 func _on_princess_princess_down(current_retry: int) -> void:
 	print(\"Princess retries: \", princess.current_retry)
 	lose_sound.play()
@@ -56,6 +56,8 @@ func _on_boss_down() -> void:
 	bdcake1.visible = true
 	bdcake2.visible = true
 	win_sound.play()
+	camera.offset = Vector2.ZERO
+	princess.godmode = true
 
 
 func _on_trigger_scene_2_body_entered(body: Node2D) -> void:
@@ -141,70 +143,58 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("CameraSnap/TriggerScene1:monitoring")
+tracks/4/path = NodePath("Princess/Camera2D:offset")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
+"update": 0,
+"values": [Vector2(0, 0)]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("Princess/Camera2D:offset")
+tracks/5/path = NodePath("BossIdle2/BossTextbox2:title_text")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, 0)]
+"update": 1,
+"values": ["Testing"]
 }
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("BossIdle2/BossTextbox2:title_text")
+tracks/6/path = NodePath("BossIdle2/BossTextbox2:visible")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": ["Testing"]
+"values": [false]
 }
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("BossIdle2/BossTextbox2:visible")
+tracks/7/path = NodePath("BossTextbox3:title_text")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [false]
+"values": ["Testing"]
 }
 tracks/8/type = "value"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("BossTextbox3:title_text")
+tracks/8/path = NodePath("BossTextbox3:visible")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": ["Testing"]
-}
-tracks/9/type = "value"
-tracks/9/imported = false
-tracks/9/enabled = true
-tracks/9/path = NodePath("BossTextbox3:visible")
-tracks/9/interp = 1
-tracks/9/loop_wrap = true
-tracks/9/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
@@ -388,7 +378,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 4, 11.966666, 20.008333),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
-"values": ["Sao đã tới đây rồiii", "Ý là thế nào?? Giải thích đi?!?", "Bực mình rùi đấy nhaaaa. Sinh nhật mà không quan tâm đến người taa.", "Bực mình!! Tui sẽ đấmmmmmm"]
+"values": ["Sao đã tới đây rồiii", "Ý là thế nào?? Giải thích đi?!?", "Bực mình rùi đấy nhaaaa. Sinh nhật mà không quan tâm đến người taa.", "Bực mình!! Không chấp nhận!!! Tui sẽ đấmmmmmm"]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -412,7 +402,7 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0.4, 8.033334, 16),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
-"values": ["Đừng màaa đừng giận dỗi nữa màaaa =(((((", "Xin nhũiiiii xin nhũiii màaaaa hãy tha thứuuuuu", "Huhu tui lỡ làm say quá mà quên mấtttt cho xin thời gian kím xiền bù quà đi mòooo"]
+"values": ["Đừng màaa đừng giận dỗi nữa màaaa =(((((", "Xin nhũiiiii xin nhũiii màaaaa hãy tha thứuuuuu", "Huhu tui lỡ làm say mê quá mà quên mấtttt. Cho xin khất quà hum nay đi mòooo"]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -494,7 +484,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(4, 12),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
-"values": ["Dỗi rồi đóooo. Ra đây nhanhhh", "Tôy đến đây đồ tồyyyy"]
+"values": ["Dỗi rồi đóooo. Ra đây nhanhhh. Đi chơi bù nhanhhhhh", "Tôy đến đây đồ tồy tệệệệ "]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -518,7 +508,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0, 7.991667),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
-"values": ["Không được phá của tuiiiiiii", "Tui sẽ thủ đến cùng đấyyy "]
+"values": ["Không được phá của tuiiiiiii", "Tui sẽ thủ đến cùng đấyyy !!!"]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
@@ -565,6 +555,18 @@ tracks/5/keys = {
 "args": [0.0],
 "method": &"play"
 }]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Princess/Camera2D:offset")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.96666664),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(100, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_iywne"]
