@@ -7,10 +7,32 @@ signal down()
 
 @export var projectile: PackedScene
 @export var slash: PackedScene
+@export var bot_scene: PackedScene
 
-enum State {IDLE, CHASE, SPAWN_ENEMIES, DASH}
+enum State {IDLE, CHASE, SPAWN_ENEMIES, DASH, DOWN}
 @onready var animated_sprite = $AnimatedSprite2D
+@onready var bot_spawnpoint = $BotSpawn
+@onready var bot_spawnpoint2 = $BotSpawn2
+@onready var cooldown = $AtkCooldown
 var current_state = State.IDLE
+var ready_to_spawn = true
+
+func _physics_process(delta: float) -> void:
+	if not is_on_floor():
+		velocity += get_gravity() * delta
+	if current_state == State.SPAWN_ENEMIES and ready_to_spawn:
+		spawn_minion()
+	move_and_slide()
+	
+func spawn_minion() -> void:
+	ready_to_spawn = false
+	cooldown.start(6.0)
+	var bot_instance = bot_scene.instantiate() as FlyingBot
+	if randf() >= 0.5:
+		bot_instance.global_position = bot_spawnpoint.global_position
+	else:
+		bot_instance.global_position = bot_spawnpoint2.global_position
+	get_tree().current_scene.add_child(bot_instance)
 
 func get_hurt(damage: int) -> void:
 	current_health -= damage
@@ -18,6 +40,7 @@ func get_hurt(damage: int) -> void:
 	play_hit_flash()
 	if (current_health <= 0):
 		animated_sprite.play("down")
+		current_state = State.DOWN
 		down.emit()
 		
 func play_hit_flash() -> void:
@@ -35,5 +58,9 @@ func play_hit_flash() -> void:
 
 func _on_detection_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Princess") and current_state == State.IDLE:
-		current_state = State.DASH
+		current_state = State.SPAWN_ENEMIES
 		enter_combat.emit()
+
+
+func _on_atk_cooldown_timeout() -> void:
+	ready_to_spawn = true

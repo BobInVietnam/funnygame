@@ -19,6 +19,11 @@ run/main_scene="uid://smnftbuuld71"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://assets/icon.svg"
 
+[display]
+
+window/size/viewport_width=1200
+window/size/viewport_height=650
+
 [global_group]
 
 Princess=""

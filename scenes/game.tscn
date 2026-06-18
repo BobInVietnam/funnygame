@@ -605,6 +605,7 @@ position_smoothing_speed = 15.0
 
 [node name="PrincessTextbox" parent="Princess" unique_id=1437668106 instance=ExtResource("5_iywne")]
 visible = false
+z_index = 12
 offset_left = -76.0
 offset_top = -108.0
 offset_right = 77.0
@@ -652,6 +653,7 @@ position = Vector2(5040, -167)
 
 [node name="BossTextbox3" parent="." unique_id=1064021626 instance=ExtResource("5_iywne")]
 visible = false
+z_index = 10
 offset_left = 4348.0
 offset_top = -198.0
 offset_right = 4475.0

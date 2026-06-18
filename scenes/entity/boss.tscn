@@ -1,7 +1,8 @@
-[gd_scene load_steps=15 format=3 uid="uid://b5k0i6m8idfrg"]
+[gd_scene format=3 uid="uid://b5k0i6m8idfrg"]
 
 [ext_resource type="Script" uid="uid://ddwdf0d7fxx18" path="res://scripts/entity/boss.gd" id="1_g3kt6"]
 [ext_resource type="Shader" uid="uid://dl108kgkw3lgu" path="res://assets/hit_flash.gdshader" id="2_00t2x"]
+[ext_resource type="PackedScene" uid="uid://cxhtiefp8lqg5" path="res://scenes/entity/flying_bot.tscn" id="2_20kyr"]
 [ext_resource type="Texture2D" uid="uid://cu881ljlyyxun" path="res://assets/charsheets.png" id="3_20kyr"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_23kos"]
@@ -98,32 +99,40 @@ size = Vector2(17, 33)
 [sub_resource type="CircleShape2D" id="CircleShape2D_g3kt6"]
 radius = 280.0
 
-[node name="Boss" type="CharacterBody2D"]
+[node name="Boss" type="CharacterBody2D" unique_id=1923491467]
 collision_layer = 2
 collision_mask = 2
 script = ExtResource("1_g3kt6")
+bot_scene = ExtResource("2_20kyr")
 health = 500
 contact_damage = 20
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=342278053]
 material = SubResource("ShaderMaterial_23kos")
 position = Vector2(0, -16)
 sprite_frames = SubResource("SpriteFrames_k5mjx")
 animation = &"stand"
 autoplay = "default"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=294264625]
 position = Vector2(0.5, -16.5)
 shape = SubResource("RectangleShape2D_4o3jm")
 
-[node name="AtkCooldown" type="Timer" parent="."]
+[node name="AtkCooldown" type="Timer" parent="." unique_id=1104726465]
 
-[node name="Detection" type="Area2D" parent="."]
+[node name="Detection" type="Area2D" parent="." unique_id=936024873]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Detection"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Detection" unique_id=606072027]
 position = Vector2(2, -16)
 shape = SubResource("CircleShape2D_g3kt6")
 
-[node name="PhaseCooldown" type="Timer" parent="."]
+[node name="PhaseCooldown" type="Timer" parent="." unique_id=1364356086]
 
+[node name="BotSpawn" type="Marker2D" parent="." unique_id=1730672895]
+position = Vector2(-62, -31)
+
+[node name="BotSpawn2" type="Marker2D" parent="." unique_id=1269939540]
+position = Vector2(-60, 29)
+
+[connection signal="timeout" from="AtkCooldown" to="." method="_on_atk_cooldown_timeout"]
 [connection signal="body_entered" from="Detection" to="." method="_on_detection_body_entered"]
