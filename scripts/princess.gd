@@ -1,7 +1,8 @@
 extends CharacterBody2D
 class_name Princess
 
-signal princess_down()
+signal princess_hurt(current_health: int)
+signal princess_down(current_retry_time: int)
 signal checkpoint_passed(checkpoint: Vector2)
 
 enum AmmoType {RED, YELLOW, BLUE}
@@ -132,6 +133,7 @@ func get_hurt(damage: int) -> void:
 	
 	currentHealth -= damage
 	print(currentHealth)
+	princess_hurt.emit(currentHealth)
 	currentState = PlayerState.HURT
 	invin_timer.start()
 	invincible = true
@@ -141,7 +143,7 @@ func get_hurt(damage: int) -> void:
 		
 func lose() -> void:
 	print("Princess down!")
-	princess_down.emit()
+	princess_down.emit(current_retry)
 
 func play_hit_flash() -> void:
 	# Fetch the shader material attached to our sprite

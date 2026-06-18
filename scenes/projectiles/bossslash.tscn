@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://bjx6450f3e1sx"]
+
+[ext_resource type="Script" uid="uid://ii7kv582esnk" path="res://scripts/bullet.gd" id="1_f5jbl"]
+[ext_resource type="Texture2D" uid="uid://cu881ljlyyxun" path="res://assets/charsheets.png" id="2_iuog7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_48g2p"]
+size = Vector2(13, 12)
+
+[node name="Bossslash" type="Area2D"]
+collision_layer = 32
+script = ExtResource("1_f5jbl")
+speed = 150.0
+damage = 20
+lifetime = 5.0
+cooldown = 0.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-0.99999785, -0.99999976)
+texture = ExtResource("2_iuog7")
+region_enabled = true
+region_rect = Rect2(103, 74, 16, 13)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1.5, -1)
+shape = SubResource("RectangleShape2D_48g2p")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

@@ -1,0 +1,129 @@
+[gd_scene load_steps=15 format=3 uid="uid://b5k0i6m8idfrg"]
+
+[ext_resource type="Script" uid="uid://ddwdf0d7fxx18" path="res://scripts/entity/boss.gd" id="1_g3kt6"]
+[ext_resource type="Shader" uid="uid://dl108kgkw3lgu" path="res://assets/hit_flash.gdshader" id="2_00t2x"]
+[ext_resource type="Texture2D" uid="uid://cu881ljlyyxun" path="res://assets/charsheets.png" id="3_20kyr"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_23kos"]
+resource_local_to_scene = true
+shader = ExtResource("2_00t2x")
+shader_parameter/flash_modifier = 0.0
+shader_parameter/flash_color = Color(1, 1, 1, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g3kt6"]
+atlas = ExtResource("3_20kyr")
+region = Rect2(64, 96, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_00t2x"]
+atlas = ExtResource("3_20kyr")
+region = Rect2(32, 96, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yva6k"]
+atlas = ExtResource("3_20kyr")
+region = Rect2(0, 64, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xsvo4"]
+atlas = ExtResource("3_20kyr")
+region = Rect2(32, 64, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_23kos"]
+atlas = ExtResource("3_20kyr")
+region = Rect2(128, 96, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_20kyr"]
+atlas = ExtResource("3_20kyr")
+region = Rect2(96, 96, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_juutk"]
+atlas = ExtResource("3_20kyr")
+region = Rect2(0, 96, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_k5mjx"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g3kt6")
+}],
+"loop": true,
+"name": &"atk",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_00t2x")
+}],
+"loop": true,
+"name": &"dash",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yva6k")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xsvo4")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_23kos")
+}],
+"loop": true,
+"name": &"down",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_20kyr")
+}],
+"loop": true,
+"name": &"jump",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_juutk")
+}],
+"loop": true,
+"name": &"stand",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4o3jm"]
+size = Vector2(17, 33)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_g3kt6"]
+radius = 280.0
+
+[node name="Boss" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("1_g3kt6")
+health = 500
+contact_damage = 20
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+material = SubResource("ShaderMaterial_23kos")
+position = Vector2(0, -16)
+sprite_frames = SubResource("SpriteFrames_k5mjx")
+animation = &"stand"
+autoplay = "default"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.5, -16.5)
+shape = SubResource("RectangleShape2D_4o3jm")
+
+[node name="AtkCooldown" type="Timer" parent="."]
+
+[node name="Detection" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Detection"]
+position = Vector2(2, -16)
+shape = SubResource("CircleShape2D_g3kt6")
+
+[node name="PhaseCooldown" type="Timer" parent="."]
+
+[connection signal="body_entered" from="Detection" to="." method="_on_detection_body_entered"]
