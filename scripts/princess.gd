@@ -3,6 +3,7 @@ class_name Princess
 
 signal princess_hurt(current_health: int)
 signal princess_down(current_retry_time: int)
+signal ammo_switched(type: AmmoType)
 signal checkpoint_passed(checkpoint: Vector2)
 
 enum AmmoType {RED, YELLOW, BLUE}
@@ -15,11 +16,14 @@ enum PlayerState {NORMAL, HURT}
 @export var red_proj_scene: PackedScene 
 @export var yellow_proj_scene: PackedScene
 @export var blue_proj_scene: PackedScene
+@export var godmode: bool = false
 
 @onready var animatedSprite = $AnimatedSprite2D
 @onready var invin_timer = $InvinTimer
 @onready var cooldown_timer = $CooldownsTimer
 @onready var muzzle = $Muzzle
+@onready var shoot_sound = $Shooting
+@onready var hurt_sound = $Hurt
 
 const COOLDOWN = 0.5
 var currentHealth: int
@@ -49,12 +53,15 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("projectile_1"):
 		currentAmmoType = AmmoType.RED
 		print("Ammo: Strong Red")
+		ammo_switched.emit(currentAmmoType)
 	if Input.is_action_just_pressed("projectile_2"):
 		currentAmmoType = AmmoType.YELLOW
 		print("Ammo: Versatile Yellow")
+		ammo_switched.emit(currentAmmoType)
 	if Input.is_action_just_pressed("projectile_3"):
 		currentAmmoType = AmmoType.BLUE
 		print("Ammo: Rapid Blue")
+		ammo_switched.emit(currentAmmoType)
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var direction := Input.get_axis("move_left", "move_right")	
@@ -125,10 +132,11 @@ func shoot() -> void:
 	projectile_instance.direction = shoot_dir
 	projectile_instance.rotation = shoot_dir.angle()
 	get_tree().current_scene.add_child(projectile_instance)
+	shoot_sound.play()
 
 
 func get_hurt(damage: int) -> void:
-	if (invincible):
+	if (invincible or godmode):
 		return
 	
 	currentHealth -= damage
@@ -138,6 +146,7 @@ func get_hurt(damage: int) -> void:
 	invin_timer.start()
 	invincible = true
 	play_hit_flash()
+	hurt_sound.play()
 	if (currentHealth <= 0):
 		lose()
 		

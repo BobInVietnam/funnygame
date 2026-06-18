@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://smnftbuuld71"]
+[gd_scene format=3 uid="uid://smnftbuuld71"]
 
 [ext_resource type="PackedScene" uid="uid://dl0psqlp4vtoe" path="res://scenes/ui.tscn" id="1_p57ef"]
 [ext_resource type="PackedScene" uid="uid://dx38fdcdlpvww" path="res://scenes/princess.tscn" id="1_uwrxv"]
@@ -8,9 +8,12 @@
 [ext_resource type="PackedScene" uid="uid://0xc02tqgkah7" path="res://scenes/textbox.tscn" id="5_iywne"]
 [ext_resource type="PackedScene" uid="uid://db25ytuu2sjrh" path="res://scenes/birthday_cake.tscn" id="6_gee14"]
 [ext_resource type="PackedScene" uid="uid://b5k0i6m8idfrg" path="res://scenes/entity/boss.tscn" id="6_u5sy4"]
+[ext_resource type="Script" uid="uid://bfn212gotknx4" path="res://scripts/scene_trigger.gd" id="8_trtic"]
 [ext_resource type="AudioStream" uid="uid://cs84go1vuy08l" path="res://assets/mixkit-cartoon-little-cat-meow-91.wav" id="9_kvpfn"]
 [ext_resource type="AudioStream" uid="uid://c8317aqf5kafq" path="res://assets/mixkit-little-cat-pain-meow-87.wav" id="10_dinhu"]
 [ext_resource type="AudioStream" uid="uid://7g7e1xvhm7mu" path="res://assets/mixkit-sweet-kitty-meow-93.wav" id="11_kvuet"]
+[ext_resource type="AudioStream" uid="uid://mim62svuplbe" path="res://assets/mixkit-ethereal-fairy-win-sound-2019.wav" id="12_kvuet"]
+[ext_resource type="AudioStream" uid="uid://ce7hm73ngskir" path="res://assets/mixkit-arcade-retro-game-over-213.wav" id="13_trtic"]
 
 [sub_resource type="GDScript" id="GDScript_p57ef"]
 script/source = "extends Node
@@ -20,6 +23,8 @@ script/source = "extends Node
 @onready var animation_player = $AnimationPlayer
 @onready var bdcake1 = $BirthdayCake1
 @onready var bdcake2 = $BirthdayCake2
+@onready var win_sound = $SFX/Win
+@onready var lose_sound = $SFX/Lose
 
 var last_checkpoint_position: Vector2
 
@@ -39,6 +44,7 @@ func respawn_player(player: Princess) -> void:
 
 func _on_princess_princess_down(current_retry: int) -> void:
 	print(\"Princess retries: \", princess.current_retry)
+	lose_sound.play()
 	respawn_player(princess)
 
 
@@ -49,6 +55,7 @@ func _on_princess_checkpoint_passed(checkpoint: Vector2) -> void:
 func _on_boss_down() -> void:
 	bdcake1.visible = true
 	bdcake2.visible = true
+	win_sound.play()
 
 
 func _on_trigger_scene_2_body_entered(body: Node2D) -> void:
@@ -63,6 +70,13 @@ func _on_trigger_scene_1_body_entered(body: Node2D) -> void:
 		print(\"Playing scene1\")
 		animation_player.stop(false)
 		animation_player.play(\"scene1\")
+
+
+func _on_trigger_scene_3_body_entered(body: Node2D) -> void:
+	if body.is_in_group(\"Princess\"):
+		print(\"Playing scene3\")
+		animation_player.stop(false)
+		animation_player.play(\"scene3\")
 "
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_iywne"]
@@ -167,6 +181,30 @@ tracks/7/path = NodePath("BossIdle2/BossTextbox2:visible")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("BossTextbox3:title_text")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["Testing"]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("BossTextbox3:visible")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
@@ -388,33 +426,174 @@ tracks/4/keys = {
 "update": 1,
 "values": [true, false, true, false, true, false]
 }
+tracks/5/type = "method"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("AnimationPlayer/Grumbling")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(3.9666667),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [0.0],
+"method": &"play"
+}]
+}
+tracks/6/type = "method"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("AnimationPlayer/Unhappy")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0.4, 11.9, 19.966667),
+"transitions": PackedFloat32Array(1, 1, 1),
+"values": [{
+"args": [0.0],
+"method": &"play"
+}, {
+"args": [0.0],
+"method": &"play"
+}, {
+"args": [0.0],
+"method": &"play"
+}]
+}
+tracks/7/type = "method"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("AnimationPlayer/Talk")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 8, 16),
+"transitions": PackedFloat32Array(1, 1, 1),
+"values": [{
+"args": [0.0],
+"method": &"play"
+}, {
+"args": [0.0],
+"method": &"play"
+}, {
+"args": [0.0],
+"method": &"play"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_kvuet"]
+resource_name = "scene3"
+length = 16.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Princess/PrincessTextbox:title_text")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(4, 12),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": ["Dỗi rồi đóooo. Ra đây nhanhhh", "Tôy đến đây đồ tồyyyy"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Princess/PrincessTextbox:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.041666746, 4, 11.283334, 11.991667, 15.933333),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [false, true, false, true, false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("BossTextbox3:title_text")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 7.991667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": ["Không được phá của tuiiiiiii", "Tui sẽ thủ đến cùng đấyyy "]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("BossTextbox3:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 7.275, 7.991667, 15.933333),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [true, false, true, false]
+}
+tracks/4/type = "method"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("AnimationPlayer/Grumbling")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(7.9333334),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [0.0],
+"method": &"play"
+}]
+}
+tracks/5/type = "method"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("AnimationPlayer/Unhappy")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 3.9916666, 11.933333),
+"transitions": PackedFloat32Array(1, 1, 1),
+"values": [{
+"args": [0.0],
+"method": &"play"
+}, {
+"args": [0.0],
+"method": &"play"
+}, {
+"args": [0.0],
+"method": &"play"
+}]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_iywne"]
 _data = {
 &"RESET": SubResource("Animation_iywne"),
 &"scene1": SubResource("Animation_lbhrr"),
-&"scene2": SubResource("Animation_p57ef")
+&"scene2": SubResource("Animation_p57ef"),
+&"scene3": SubResource("Animation_kvuet")
 }
 
-[node name="Game" type="Node2D"]
+[node name="Game" type="Node2D" unique_id=863868007]
 script = SubResource("GDScript_p57ef")
 
-[node name="Parallax2D" type="Parallax2D" parent="."]
+[node name="Parallax2D" type="Parallax2D" parent="." unique_id=1168170457]
 scroll_scale = Vector2(0.4, 0.4)
 repeat_size = Vector2(512, 0)
 repeat_times = 3
 
-[node name="Sprite2D" type="Sprite2D" parent="Parallax2D"]
+[node name="Sprite2D" type="Sprite2D" parent="Parallax2D" unique_id=550753901]
 position = Vector2(256, 124)
 scale = Vector2(2, 2)
 texture = SubResource("CompressedTexture2D_iywne")
 
-[node name="TileMapLayers" parent="." instance=ExtResource("1_yqjtg")]
+[node name="TileMapLayers" parent="." unique_id=395966305 instance=ExtResource("1_yqjtg")]
 
-[node name="Princess" parent="." instance=ExtResource("1_uwrxv")]
+[node name="Princess" parent="." unique_id=1544743701 instance=ExtResource("1_uwrxv")]
 jumpVelocity = -300.0
 
-[node name="Camera2D" type="Camera2D" parent="Princess"]
+[node name="Camera2D" type="Camera2D" parent="Princess" unique_id=1792765047]
 position = Vector2(1, -59)
 zoom = Vector2(2, 2)
 limit_left = -10000091
@@ -424,7 +603,7 @@ limit_bottom = 149
 position_smoothing_enabled = true
 position_smoothing_speed = 15.0
 
-[node name="PrincessTextbox" parent="Princess" instance=ExtResource("5_iywne")]
+[node name="PrincessTextbox" parent="Princess" unique_id=1437668106 instance=ExtResource("5_iywne")]
 visible = false
 offset_left = -76.0
 offset_top = -108.0
@@ -432,18 +611,18 @@ offset_right = 77.0
 offset_bottom = -73.0
 title_text = "Nàooo hôm nay sinh nhật tui đấyyy!"
 
-[node name="Killzone" parent="." instance=ExtResource("3_lnu2h")]
+[node name="Killzone" parent="." unique_id=730314117 instance=ExtResource("3_lnu2h")]
 position = Vector2(123, 132)
 collision_layer = 255
 collision_mask = 255
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Killzone"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Killzone" unique_id=767690348]
 shape = SubResource("WorldBoundaryShape2D_lbhrr")
 
-[node name="BossIdle" parent="." instance=ExtResource("3_lbhrr")]
+[node name="BossIdle" parent="." unique_id=727161057 instance=ExtResource("3_lbhrr")]
 position = Vector2(1496, -132)
 
-[node name="BossTextbox" parent="BossIdle" instance=ExtResource("5_iywne")]
+[node name="BossTextbox" parent="BossIdle" unique_id=1301873900 instance=ExtResource("5_iywne")]
 visible = false
 z_index = 10
 offset_left = -77.0
@@ -452,65 +631,89 @@ offset_right = 80.0
 offset_bottom = -69.0
 title_text = "Sao lại đến đâyyy"
 
-[node name="BossIdle2" parent="." instance=ExtResource("3_lbhrr")]
+[node name="BossIdle2" parent="." unique_id=801386002 instance=ExtResource("3_lbhrr")]
 position = Vector2(3269, -58)
 
-[node name="BossTextbox2" parent="BossIdle2" instance=ExtResource("5_iywne")]
+[node name="BossTextbox2" parent="BossIdle2" unique_id=1155166258 instance=ExtResource("5_iywne")]
 visible = false
 z_index = 10
-offset_left = -35.0
+offset_left = -70.0
 offset_top = -109.0
-offset_right = 37.0
+offset_right = 79.0
 offset_bottom = -48.0
 
-[node name="BirthdayCake1" parent="." instance=ExtResource("6_gee14")]
+[node name="BirthdayCake1" parent="." unique_id=641731438 instance=ExtResource("6_gee14")]
 visible = false
 position = Vector2(4880, -168)
 
-[node name="BirthdayCake2" parent="." instance=ExtResource("6_gee14")]
+[node name="BirthdayCake2" parent="." unique_id=845740429 instance=ExtResource("6_gee14")]
 visible = false
 position = Vector2(5040, -167)
 
-[node name="Boss" parent="." instance=ExtResource("6_u5sy4")]
+[node name="BossTextbox3" parent="." unique_id=1064021626 instance=ExtResource("5_iywne")]
+visible = false
+offset_left = 4348.0
+offset_top = -198.0
+offset_right = 4475.0
+offset_bottom = -136.0
+
+[node name="Boss" parent="." unique_id=316512308 instance=ExtResource("6_u5sy4")]
 position = Vector2(4958, -122)
 
-[node name="Spawnpoint" type="Marker2D" parent="."]
+[node name="Spawnpoint" type="Marker2D" parent="." unique_id=1343668923]
 position = Vector2(0, -34)
 
-[node name="Texts" type="Node" parent="."]
+[node name="Texts" type="Node" parent="." unique_id=378129531]
 
-[node name="CameraSnap" type="Node" parent="."]
+[node name="CameraSnap" type="Node" parent="." unique_id=1506076580]
 
-[node name="TriggerScene1" type="Area2D" parent="CameraSnap"]
+[node name="TriggerScene1" type="Area2D" parent="CameraSnap" unique_id=1050640043]
 position = Vector2(1227, -130)
+script = ExtResource("8_trtic")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CameraSnap/TriggerScene1"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CameraSnap/TriggerScene1" unique_id=773553106]
 position = Vector2(-24, -11)
 shape = SubResource("SegmentShape2D_iywne")
 
-[node name="TriggerScene2" type="Area2D" parent="CameraSnap"]
+[node name="TriggerScene2" type="Area2D" parent="CameraSnap" unique_id=1364006196]
 position = Vector2(1227, -130)
+script = ExtResource("8_trtic")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CameraSnap/TriggerScene2"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CameraSnap/TriggerScene2" unique_id=1949916277]
 position = Vector2(1758, -15)
 shape = SubResource("SegmentShape2D_iywne")
 
-[node name="UI" parent="." instance=ExtResource("1_p57ef")]
+[node name="TriggerScene3" type="Area2D" parent="CameraSnap" unique_id=1395102746]
+position = Vector2(1227, -130)
+script = ExtResource("8_trtic")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_iywne")
-}
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CameraSnap/TriggerScene3" unique_id=1490019916]
+position = Vector2(2903, -40)
+shape = SubResource("SegmentShape2D_iywne")
 
-[node name="Grumbling" type="AudioStreamPlayer" parent="AnimationPlayer"]
+[node name="UI" parent="." unique_id=1525141738 instance=ExtResource("1_p57ef")]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=979569891]
+libraries/ = SubResource("AnimationLibrary_iywne")
+
+[node name="Grumbling" type="AudioStreamPlayer" parent="AnimationPlayer" unique_id=1535222345]
 stream = ExtResource("9_kvpfn")
 
-[node name="Unhappy" type="AudioStreamPlayer" parent="AnimationPlayer"]
+[node name="Unhappy" type="AudioStreamPlayer" parent="AnimationPlayer" unique_id=1551162883]
 stream = ExtResource("10_dinhu")
 
-[node name="Talk" type="AudioStreamPlayer" parent="AnimationPlayer"]
+[node name="Talk" type="AudioStreamPlayer" parent="AnimationPlayer" unique_id=2079187394]
 stream = ExtResource("11_kvuet")
 
+[node name="SFX" type="Node" parent="." unique_id=1111999414]
+
+[node name="Win" type="AudioStreamPlayer" parent="SFX" unique_id=367330006]
+stream = ExtResource("12_kvuet")
+
+[node name="Lose" type="AudioStreamPlayer" parent="SFX" unique_id=370751950]
+stream = ExtResource("13_trtic")
+
+[connection signal="ammo_switched" from="Princess" to="UI" method="_on_princess_ammo_switched"]
 [connection signal="checkpoint_passed" from="Princess" to="." method="_on_princess_checkpoint_passed"]
 [connection signal="princess_down" from="Princess" to="." method="_on_princess_princess_down"]
 [connection signal="princess_down" from="Princess" to="UI" method="_on_princess_princess_down"]
@@ -520,4 +723,8 @@ stream = ExtResource("11_kvuet")
 [connection signal="enter_combat" from="Boss" to="UI" method="_on_boss_enter_combat"]
 [connection signal="hurt" from="Boss" to="UI" method="_on_boss_hurt"]
 [connection signal="body_entered" from="CameraSnap/TriggerScene1" to="." method="_on_trigger_scene_1_body_entered"]
+[connection signal="body_entered" from="CameraSnap/TriggerScene1" to="CameraSnap/TriggerScene1" method="_on_body_entered"]
 [connection signal="body_entered" from="CameraSnap/TriggerScene2" to="." method="_on_trigger_scene_2_body_entered"]
+[connection signal="body_entered" from="CameraSnap/TriggerScene2" to="CameraSnap/TriggerScene2" method="_on_body_entered"]
+[connection signal="body_entered" from="CameraSnap/TriggerScene3" to="." method="_on_trigger_scene_3_body_entered"]
+[connection signal="body_entered" from="CameraSnap/TriggerScene3" to="CameraSnap/TriggerScene3" method="_on_body_entered"]

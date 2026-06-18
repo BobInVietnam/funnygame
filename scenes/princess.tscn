@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://dx38fdcdlpvww"]
+[gd_scene format=3 uid="uid://dx38fdcdlpvww"]
 
 [ext_resource type="Script" uid="uid://8qfba5gqaqte" path="res://scripts/princess.gd" id="1_6t68o"]
 [ext_resource type="Texture2D" uid="uid://cu881ljlyyxun" path="res://assets/charsheets.png" id="1_lj8jo"]
@@ -6,6 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://x0401jhex5hs" path="res://scenes/projectiles/red_princess_star.tscn" id="2_juk0a"]
 [ext_resource type="PackedScene" uid="uid://ux3x60n241sf" path="res://scenes/projectiles/yellow_princess_star.tscn" id="2_rl5q2"]
 [ext_resource type="PackedScene" uid="uid://byhgwwjgobc0r" path="res://scenes/projectiles/blue_princess_star.tscn" id="4_3mclv"]
+[ext_resource type="AudioStream" uid="uid://nfnqcm2eq0j0" path="res://assets/mixkit-game-ball-tap-2073.wav" id="7_3mclv"]
+[ext_resource type="AudioStream" uid="uid://ci76ccpwsgwnk" path="res://assets/mixkit-cartoon-quick-splat-2890.wav" id="8_ctn35"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_rl5q2"]
 resource_local_to_scene = true
@@ -147,28 +149,34 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_inrnk"]
 size = Vector2(13, 30)
 
-[node name="player" type="CharacterBody2D" groups=["Princess"]]
+[node name="player" type="CharacterBody2D" unique_id=1588228051 groups=["Princess"]]
 script = ExtResource("1_6t68o")
 red_proj_scene = ExtResource("2_juk0a")
 yellow_proj_scene = ExtResource("2_rl5q2")
 blue_proj_scene = ExtResource("4_3mclv")
 
-[node name="Muzzle" type="Marker2D" parent="."]
+[node name="Muzzle" type="Marker2D" parent="." unique_id=501505556]
 position = Vector2(8, -12)
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1527541970]
 material = SubResource("ShaderMaterial_rl5q2")
 position = Vector2(3, -16)
 sprite_frames = SubResource("SpriteFrames_el37e")
 autoplay = "default"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1732296836]
 position = Vector2(0, -15)
 shape = SubResource("RectangleShape2D_inrnk")
 
-[node name="InvinTimer" type="Timer" parent="."]
+[node name="InvinTimer" type="Timer" parent="." unique_id=545573968]
 
-[node name="CooldownsTimer" type="Timer" parent="."]
+[node name="CooldownsTimer" type="Timer" parent="." unique_id=1930333624]
+
+[node name="Shooting" type="AudioStreamPlayer" parent="." unique_id=1541853886]
+stream = ExtResource("7_3mclv")
+
+[node name="Hurt" type="AudioStreamPlayer" parent="." unique_id=511594078]
+stream = ExtResource("8_ctn35")
 
 [connection signal="timeout" from="InvinTimer" to="." method="_on_invin_timer_timeout"]
 [connection signal="timeout" from="CooldownsTimer" to="." method="_on_cooldowns_timer_timeout"]
